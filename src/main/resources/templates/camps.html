@@ -7,6 +7,13 @@
 <body>
     <h1>Camps</h1>
 
+    <h2>Add a camp</h2>
+    <form th:action="@{/camps}" th:object="${camp}" method="post">
+        <label>Camp name: <input type="text" th:field="*{name}" required /></label>
+        <label>Location: <input type="text" th:field="*{location}" required /></label>
+        <button type="submit">Add Camp</button>
+    </form>
+
     <p th:if="${#lists.isEmpty(camps)}">No camps yet. Add a camp first.</p>
 
     <div th:each="view : ${camps}">
@@ -47,5 +54,7 @@
 
         <hr>
     </div>
+
+    <p><a href="/reports">View Reports</a></p>
 </body>
 </html>
