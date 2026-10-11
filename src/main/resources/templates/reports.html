@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports - Flood Relief Resource Coordination</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; text-decoration: none; color: #0066cc; }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <a href="/">Home</a> | 
+        <a href="/camps">Camps</a> | 
+        <a href="/resources/add">Add Resource</a> | 
+        <a href="/needs/add">Add Need</a> | 
+        <a href="/reports">Reports</a>
+    </div>
+
+    <h1>Resource Coordination Reports</h1>
+
+    <h2>Resource Totals by Camp</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Camp Name</th>
+                <th>Resource Type</th>
+                <th>Total Received</th>
+                <th>Total Used</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="camp : ${camps}">
+                <td th:text="${camp.name}">Camp Name</td>
+                <td colspan="4">
+                    <table>
+                        <tr th:each="res : ${camp.resources}">
+                            <td th:text="${res.type}">Type</td>
+                            <td th:text="${res.received}">0</td>
+                            <td th:text="${res.used}">0</td>
+                            <td th:text="${res.available}">0</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Resource Log Audit Trail</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Camp</th>
+                <th>Action / Log Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="log : ${logs}">
+                <td th:text="${log.timestamp}">Timestamp</td>
+                <td th:text="${log.camp != null ? log.camp.name : 'N/A'}">Camp</td>
+                <td th:text="${log.details}">Log Details</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
