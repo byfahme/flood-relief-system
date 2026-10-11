@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Camps</title>
+</head>
+<body>
+    <h1>Manage Camps</h1>
+    
+    <form th:action="@{/camps}" th:object="${camp}" method="post">
+        <label>Camp Name:</label>
+        <input type="text" th:field="*{name}" required />
+        <br/><br/>
+        <label>Location:</label>
+        <input type="text" th:field="*{location}" required />
+        <br/><br/>
+        <button type="submit">Add Camp</button>
+    </form>
+
+    <h2>Existing Camps</h2>
+    <ul>
+        <li th:each="c : ${camps}">
+            <span th:text="${c.name}"></span> - <span th:text="${c.location}"></span>
+        </li>
+    </ul>
+    <br/>
+    <a href="/reports">View Reports</a>
+</body>
+</html>
