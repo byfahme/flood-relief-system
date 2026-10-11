@@ -1,17 +1,23 @@
 package com.kmct.floodrelief;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import java.util.Collections;
 
 @Controller
 public class ReportController {
 
+    @Autowired
+    private CampRepository campRepository;
+
+    @Autowired
+    private ResourceLogRepository resourceLogRepository;
+
     @GetMapping("/reports")
     public String getReportsPage(Model model) {
-        model.addAttribute("camps", Collections.emptyList());
-        model.addAttribute("logs", Collections.emptyList());
+        model.addAttribute("camps", campRepository.findAll());
+        model.addAttribute("logs", resourceLogRepository.findAll());
         return "reports";
     }
 }
