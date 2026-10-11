@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Camps</title>
+</head>
+<body>
+    <h1>Camps</h1>
+
+    <p th:if="${#lists.isEmpty(camps)}">No camps yet. Add a camp first.</p>
+
+    <div th:each="view : ${camps}">
+        <h2 th:text="${view.camp.name}"></h2>
+        <p>Location: <span th:text="${view.camp.location}"></span></p>
+
+        <h3>Resources</h3>
+        <p th:if="${#lists.isEmpty(view.resources)}">No resources logged.</p>
+        <table th:unless="${#lists.isEmpty(view.resources)}" border="1">
+            <tr>
+                <th>Type</th>
+                <th>Received</th>
+                <th>Used</th>
+                <th>Available</th>
+            </tr>
+            <tr th:each="r : ${view.resources}">
+                <td th:text="${r.type}"></td>
+                <td th:text="${r.received}"></td>
+                <td th:text="${r.used}"></td>
+                <td th:text="${r.available}"></td>
+            </tr>
+        </table>
+
+        <h3>Needs</h3>
+        <p th:if="${#lists.isEmpty(view.needs)}">No needs logged.</p>
+        <table th:unless="${#lists.isEmpty(view.needs)}" border="1">
+            <tr>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Status</th>
+            </tr>
+            <tr th:each="n : ${view.needs}">
+                <td th:text="${n.type}"></td>
+                <td th:text="${n.quantity}"></td>
+                <td th:text="${n.status}"></td>
+            </tr>
+        </table>
+
+        <hr>
+    </div>
+</body>
+</html>

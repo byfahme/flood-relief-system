@@ -2,6 +2,8 @@ package com.kmct.floodrelief;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Need {
 
@@ -18,12 +20,15 @@ public class Need {
     @ManyToOne
     private Camp camp;
 
+    private LocalDateTime createdAt;
+
     public Need() {}
 
     public Need(String type, int quantity, Camp camp) {
         this.type = type;
         this.quantity = quantity;
         this.camp = camp;
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() { return id; }
@@ -35,4 +40,6 @@ public class Need {
     public void setStatus(NeedStatus status) { this.status = status; }
     public Camp getCamp() { return camp; }
     public void setCamp(Camp camp) { this.camp = camp; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

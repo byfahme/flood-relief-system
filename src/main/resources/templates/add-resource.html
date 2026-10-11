@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Resource</title>
+</head>
+<body>
+    <h1>Add Resource</h1>
+
+    <p th:if="${param.saved}">Resource saved.</p>
+
+    <ul th:if="${errors}">
+        <li th:each="error : ${errors}" th:text="${error}"></li>
+    </ul>
+
+    <form method="post" th:action="@{/resources/add}">
+        <p>
+            <label>Camp:
+                <select name="campId">
+                    <option value="">-- choose a camp --</option>
+                    <option th:each="c : ${camps}"
+                            th:value="${c.id}"
+                            th:text="${c.name}"
+                            th:selected="${c.id == selectedCampId}"></option>
+                </select>
+            </label>
+        </p>
+
+        <p>
+            <label>Type:
+                <select name="type">
+                    <option value="">-- choose a type --</option>
+                    <option th:each="t : ${types}"
+                            th:value="${t}"
+                            th:text="${t}"
+                            th:selected="${t == selectedType}"></option>
+                </select>
+            </label>
+        </p>
+
+        <p>
+            <label>Quantity received:
+                <input type="number" name="received" min="1" th:value="${enteredQuantity}">
+            </label>
+        </p>
+
+        <button type="submit">Save resource</button>
+    </form>
+</body>
+</html>
