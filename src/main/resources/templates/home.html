@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Flood Relief System</title>
-        <link rel="stylesheet" href="/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flood Relief</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h1>Flood Relief Resource Coordination System</h1>
-    <p>Project skeleton is running.</p>
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/camps">Camps</a>
+        <a href="/needs">Needs</a>
+        <a href="/resources/add">Add Resource</a>
+        <a href="/needs/add">Add Need</a>
+        <a href="/reports">Reports</a>
+    </div>
+
+    <h1>Flood Relief Resource Coordination</h1>
+    <p>Track camp supplies, record needs, and see what's still missing.</p>
+
+    <div class="card"><a href="/camps">Camps</a>: see each camp's resources and needs.</div>
+    <div class="card"><a href="/needs">Needs</a>: view open and escalated needs.</div>
+    <div class="card"><a href="/reports">Reports</a>: resource totals and the audit log.</div>
 </body>
 </html>

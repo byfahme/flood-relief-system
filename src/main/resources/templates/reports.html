@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Resource Coordination Reports</title>
-        <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/camps">Camps</a>
+        <a href="/needs">Needs</a>
+        <a href="/resources/add">Add Resource</a>
+        <a href="/needs/add">Add Need</a>
+        <a href="/reports">Reports</a>
+    </div>
+
     <h1>Resource Coordination Reports</h1>
 
-    <p>
-        <a href="/">Home</a> |
-        <a href="/camps">Camps</a> |
-        <a href="/needs">Needs</a> |
-        <a href="/reports">Reports</a>
-    </p>
-
-    <hr/>
-
     <h2>Camps Overview</h2>
-    <table border="1" cellpadding="8">
+    <table>
         <thead>
             <tr>
                 <th>Camp ID</th>
@@ -38,7 +39,7 @@
 
     <p th:if="${#lists.isEmpty(logs)}">No resource changes logged yet.</p>
 
-    <table th:unless="${#lists.isEmpty(logs)}" border="1" cellpadding="8">
+    <table th:unless="${#lists.isEmpty(logs)}">
         <thead>
             <tr>
                 <th>Time</th>
