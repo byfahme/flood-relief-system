@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Needs and Escalations</title>
+        <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Needs and Escalations</h1>
+    <p><a href="/">Home</a> | <a href="/camps">Camps</a></p>
+
+    <p th:if="${#lists.isEmpty(needs)}">No open or escalated needs.</p>
+
+    <table th:unless="${#lists.isEmpty(needs)}" border="1">
+        <thead>
+            <tr>
+                <th>Camp</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="n : ${needs}">
+                <td th:text="${n.camp.name}">Camp</td>
+                <td th:text="${n.type}">Type</td>
+                <td th:text="${n.quantity}">0</td>
+                <td th:text="${n.status}">OPEN</td>
+                <td th:text="${#temporals.format(n.createdAt, 'dd MMM yyyy HH:mm')}">Date</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

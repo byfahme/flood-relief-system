@@ -2,13 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Resource Coordination Reports</title>
+        <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <h1>Resource Coordination Reports</h1>
 
     <p>
-        <a href="/">Home</a> | 
-        <a href="/camps">Camps</a> | 
+        <a href="/">Home</a> |
+        <a href="/camps">Camps</a> |
+        <a href="/needs">Needs</a> |
         <a href="/reports">Reports</a>
     </p>
 
@@ -32,18 +34,23 @@
         </tbody>
     </table>
 
-    <h2>Resource Log Audit Trail</h2>
-    <table border="1" cellpadding="8">
+    <h2>Audit: Resource Log</h2>
+
+    <p th:if="${#lists.isEmpty(logs)}">No resource changes logged yet.</p>
+
+    <table th:unless="${#lists.isEmpty(logs)}" border="1" cellpadding="8">
         <thead>
             <tr>
-                <th>Log ID</th>
-                <th>Action / Details</th>
+                <th>Time</th>
+                <th>Resource ID</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="log : ${logs}">
-                <td th:text="${log.id}">1</td>
-                <td th:text="${log}">Log Details</td>
+            <tr th:each="entry : ${logs}">
+                <td th:text="${#temporals.format(entry.timestamp, 'dd MMM yyyy HH:mm:ss')}">Time</td>
+                <td th:text="${entry.resource.id}">0</td>
+                <td th:text="${entry.action}">Action</td>
             </tr>
         </tbody>
     </table>
