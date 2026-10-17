@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deliveries</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="nav">
+        <a class="brand" href="/">Flood Relief</a>
+        <a href="/camps">Camps</a>
+        <a href="/needs">Needs</a>
+        <a href="/resources">Resources</a>
+        <a href="/resources/add">Add Resource</a>
+        <a href="/needs/add">Add Need</a>
+        <a href="/deliveries">Deliveries</a>
+        <a href="/reports">Reports</a>
+    </div>
+
+    <div class="container">
+        <h1>Delivery History</h1>
+
+        <p th:if="${#lists.isEmpty(logs)}">No deliveries recorded yet.</p>
+
+        <table th:unless="${#lists.isEmpty(logs)}">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Camp</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="l : ${logs}">
+                    <td th:text="${#temporals.format(l.timestamp, 'dd MMM yyyy HH:mm')}">Date</td>
+                    <td th:text="${l.resource != null and l.resource.camp != null ? l.resource.camp.name : '-'}">Camp</td>
+                    <td th:text="${l.action}">Details</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

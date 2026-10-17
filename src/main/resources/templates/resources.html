@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resources</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="nav">
+        <a class="brand" href="/">Flood Relief</a>
+        <a href="/camps">Camps</a>
+        <a href="/needs">Needs</a>
+        <a href="/resources">Resources</a>
+        <a href="/resources/add">Add Resource</a>
+        <a href="/needs/add">Add Need</a>
+        <a href="/reports">Reports</a>
+    </div>
+
+    <div class="container">
+        <h1>Resources</h1>
+        <p><a class="btn" href="/resources/add">+ Add Resource</a></p>
+
+        <p th:if="${#lists.isEmpty(resources)}">No resources yet.</p>
+
+        <table th:unless="${#lists.isEmpty(resources)}">
+            <thead>
+                <tr>
+                    <th>Camp</th>
+                    <th>Type</th>
+                    <th>Received</th>
+                    <th>Used</th>
+                    <th>Available</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="r : ${resources}">
+                    <td th:text="${r.camp != null ? r.camp.name : '-'}">Camp</td>
+                    <td th:text="${r.type}">Type</td>
+                    <td th:text="${r.received}">0</td>
+                    <td th:text="${r.used}">0</td>
+                    <td th:text="${r.available}">0</td>
+                    <td>
+                        <a th:href="@{/resources/{id}/edit(id=${r.id})}">Edit</a>
+
+                        <form method="post" th:action="@{/resources/{id}/delete(id=${r.id})}" style="display:inline"
+                              onsubmit="return confirm('Delete this resource?')">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

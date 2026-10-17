@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Need</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="nav">
+        <a class="brand" href="/">Flood Relief</a>
+        <a href="/camps">Camps</a>
+        <a href="/needs">Needs</a>
+        <a href="/resources/add">Add Resource</a>
+        <a href="/needs/add">Add Need</a>
+        <a href="/reports">Reports</a>
+    </div>
+
+    <div class="container">
+        <h1>Edit Need</h1>
+
+        <form method="post" th:action="@{/needs/{id}/edit(id=${need.id})}">
+            <p>
+                <label>Type:
+                    <input type="text" name="type" th:value="${need.type}" required>
+                </label>
+            </p>
+            <p>
+                <label>Quantity:
+                    <input type="number" name="quantity" min="1" th:value="${need.quantity}" required>
+                </label>
+            </p>
+            <button type="submit">Save changes</button>
+            <a href="/needs">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -11,13 +11,21 @@
         <a class="brand" href="/">Flood Relief</a>
         <a href="/camps">Camps</a>
         <a href="/needs">Needs</a>
+        <a href="/resources">Resources</a>
         <a href="/resources/add">Add Resource</a>
         <a href="/needs/add">Add Need</a>
+        <a href="/deliveries">Deliveries</a>
         <a href="/reports">Reports</a>
     </div>
 
     <div class="container">
         <h1>Needs and Escalations</h1>
+
+        <p th:if="${param.given}">Delivery recorded.</p>
+        <p th:if="${param.error == 'stock'}" style="color:#b91c1c">Not enough stock at this camp for that item.</p>
+        <p th:if="${param.error == 'toomuch'}" style="color:#b91c1c">That is more than the amount still needed.</p>
+        <p th:if="${param.error == 'amount'}" style="color:#b91c1c">Enter an amount of at least 1.</p>
+        <p th:if="${param.error == 'nocamp'}" style="color:#b91c1c">This need has no camp, so it can't be delivered.</p>
 
         <p th:if="${#lists.isEmpty(needs)}">No open or escalated needs.</p>
 
@@ -26,20 +34,50 @@
                 <tr>
                     <th>Camp</th>
                     <th>Type</th>
-                    <th>Quantity</th>
+                    <th>Requested</th>
+                    <th>Given</th>
+                    <th>Still needed</th>
                     <th>Status</th>
                     <th>Created</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr th:each="n : ${needs}">
+            <tbody th:each="n : ${needs}">
+                <tr>
                     <td th:text="${n.camp != null ? n.camp.name : '-'}">Camp</td>
                     <td th:text="${n.type}">Type</td>
                     <td th:text="${n.quantity}">0</td>
+                    <td th:text="${n.delivered}">0</td>
+                    <td th:text="${n.remaining}">0</td>
                     <td>
                         <span th:class="'badge badge-' + ${#strings.toLowerCase(n.status)}" th:text="${n.status}">OPEN</span>
                     </td>
                     <td th:text="${n.createdAt != null ? #temporals.format(n.createdAt, 'dd MMM yyyy HH:mm') : '-'}">Date</td>
+                    <td class="actions">
+                        <a th:href="@{/needs/{id}/edit(id=${n.id})}">Edit</a>
+
+                        <form method="post" th:action="@{/needs/{id}/resolve(id=${n.id})}" style="display:inline">
+                            <button type="submit">Resolve</button>
+                        </form>
+
+                        <form method="post" th:action="@{/needs/{id}/delete(id=${n.id})}" style="display:inline"
+                              onsubmit="return confirm('Delete this need?')">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr class="give-row">
+                    <td colspan="8">
+                        <form class="give-form" method="post" th:action="@{/needs/{id}/give(id=${n.id})}">
+                            <label>Give
+                                <input type="number" name="amount" min="1" th:max="${n.remaining}" required>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="confirmed" value="true"> Confirmed received
+                            </label>
+                            <button type="submit">Give</button>
+                        </form>
+                    </td>
                 </tr>
             </tbody>
         </table>

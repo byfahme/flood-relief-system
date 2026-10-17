@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Camp</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="nav">
+        <a class="brand" href="/">Flood Relief</a>
+        <a href="/camps">Camps</a>
+        <a href="/needs">Needs</a>
+        <a href="/resources">Resources</a>
+        <a href="/resources/add">Add Resource</a>
+        <a href="/needs/add">Add Need</a>
+        <a href="/deliveries">Deliveries</a>
+        <a href="/reports">Reports</a>
+    </div>
+
+    <div class="container">
+        <h1>Edit Camp</h1>
+
+        <form method="post" th:action="@{/camps/{id}/edit(id=${camp.id})}">
+            <p>
+                <label>Camp name:
+                    <input type="text" name="name" th:value="${camp.name}" required>
+                </label>
+            </p>
+            <p>
+                <label>Location:
+                    <input type="text" name="location" th:value="${camp.location}" required>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" name="received" value="true" th:checked="${camp.received}">
+                    Supplies received at this camp
+                </label>
+            </p>
+            <p>
+                <label>Update note:<br>
+                    <textarea name="updateNote" rows="3" cols="50" th:text="${camp.updateNote}"></textarea>
+                </label>
+            </p>
+            <button type="submit">Save changes</button>
+            <a href="/camps">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Resource</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="nav">
+        <a class="brand" href="/">Flood Relief</a>
+        <a href="/camps">Camps</a>
+        <a href="/needs">Needs</a>
+        <a href="/resources">Resources</a>
+        <a href="/resources/add">Add Resource</a>
+        <a href="/needs/add">Add Need</a>
+        <a href="/deliveries">Deliveries</a>
+        <a href="/reports">Reports</a>
+    </div>
+
+    <div class="container">
+        <h1>Edit Resource</h1>
+
+        <p th:if="${param.error == 'invalid'}" style="color:#b91c1c">
+            Used cannot be more than Received, and numbers cannot be negative.
+        </p>
+
+        <form method="post" th:action="@{/resources/{id}/edit(id=${resource.id})}">
+            <p>
+                <label>Type:
+                    <input type="text" name="type" th:value="${resource.type}" required>
+                </label>
+            </p>
+            <p>
+                <label>Received:
+                    <input type="number" name="received" min="0" th:value="${resource.received}" required>
+                </label>
+            </p>
+            <p>
+                <label>Used:
+                    <input type="number" name="used" min="0" th:value="${resource.used}" required>
+                </label>
+            </p>
+            <p>Available will be: Received minus Used.</p>
+            <button type="submit">Save changes</button>
+            <a href="/resources">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

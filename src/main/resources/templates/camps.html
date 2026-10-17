@@ -8,74 +8,86 @@
 </head>
 <body>
     <div class="nav">
-        <a href="/">Home</a>
+        <a class="brand" href="/">Flood Relief</a>
         <a href="/camps">Camps</a>
         <a href="/needs">Needs</a>
+        <a href="/resources">Resources</a>
         <a href="/resources/add">Add Resource</a>
         <a href="/needs/add">Add Need</a>
+        <a href="/deliveries">Deliveries</a>
         <a href="/reports">Reports</a>
     </div>
 
-    <h1>Camps</h1>
+    <div class="container">
+        <div class="page-head">
+            <h1>Camps</h1>
+            <a class="btn" href="/camps/add">+ Add Camp</a>
+        </div>
 
-    <h2>Add a camp</h2>
-    <form th:action="@{/camps}" th:object="${camp}" method="post">
-        <label>Camp name: <input type="text" th:field="*{name}" required /></label>
-        <label>Location: <input type="text" th:field="*{location}" required /></label>
-        <button type="submit">Add Camp</button>
-    </form>
+        <p th:if="${param.error}" class="alert">
+            This camp still has resources or needs. Clear those first.
+        </p>
 
-    <p th:if="${#lists.isEmpty(camps)}">No camps yet. Add a camp first.</p>
+        <p th:if="${#lists.isEmpty(camps)}" class="cc-empty">No camps yet. Click Add Camp to create one.</p>
 
-    <div th:each="view : ${camps}">
-        <h2 th:text="${view.camp.name}"></h2>
-        <p>Location: <span th:text="${view.camp.location}"></span></p>
+        <div class="cc-grid" th:unless="${#lists.isEmpty(camps)}">
+            <article class="cc" th:each="view : ${camps}">
 
-        <h3>Resources</h3>
-        <p th:if="${#lists.isEmpty(view.resources)}">No resources logged.</p>
-        <table th:unless="${#lists.isEmpty(view.resources)}">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Received</th>
-                    <th>Used</th>
-                    <th>Available</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="r : ${view.resources}">
-                    <td th:text="${r.type}"></td>
-                    <td th:text="${r.received}"></td>
-                    <td th:text="${r.used}"></td>
-                    <td th:text="${r.available}"></td>
-                </tr>
-            </tbody>
-        </table>
+                <header class="cc-top">
+                    <div>
+                        <h2 class="cc-title" th:text="${view.camp.name}">Camp</h2>
+                        <p class="cc-sub" th:text="${view.camp.location ?: 'No location'}">Location</p>
+                    </div>
+                    <span class="pill"
+                          th:classappend="${#lists.isEmpty(view.stillNeeded)} ? 'pill-ok' : 'pill-need'"
+                          th:text="${#lists.isEmpty(view.stillNeeded)} ? 'Covered' : ${#lists.size(view.stillNeeded)} + ' needs'">Covered</span>
+                </header>
 
-        <h3>Needs</h3>
-        <p th:if="${#lists.isEmpty(view.needs)}">No needs logged.</p>
-        <table th:unless="${#lists.isEmpty(view.needs)}">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="n : ${view.needs}">
-                    <td th:text="${n.type}"></td>
-                    <td th:text="${n.quantity}"></td>
-                    <td>
-                        <span th:class="'badge badge-' + ${#strings.toLowerCase(n.status)}" th:text="${n.status}"></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <section class="cc-block">
+                    <h3 class="cc-label">Needed</h3>
 
-        <hr>
+                    <p class="cc-empty" th:if="${#lists.isEmpty(view.stillNeeded)}">Nothing needed right now</p>
+
+                    <div class="cc-need" th:each="n : ${view.stillNeeded}">
+                        <div class="cc-row">
+                            <span class="tag" th:text="${n.type}">food</span>
+                            <span>
+                                <strong th:text="${n.remaining}">0</strong>
+                                <span class="muted"> of </span>
+                                <span th:text="${n.quantity}">0</span>
+                                <span class="muted"> left</span>
+                                <span class="pill pill-esc" th:if="${n.status.name() == 'ESCALATED'}">Escalated</span>
+                            </span>
+                        </div>
+                        <div class="bar">
+                            <div class="bar-fill" th:style="'width:' + ${n.delivered * 100 / n.quantity} + '%'"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cc-block">
+                    <h3 class="cc-label">In stock</h3>
+
+                    <p class="cc-empty" th:if="${#lists.isEmpty(view.resources)}">No stock recorded</p>
+
+                    <div class="cc-row stock-row" th:each="r : ${view.resources}">
+                        <span class="tag tag-stock" th:text="${r.type}">food</span>
+                        <span>
+                            <strong th:text="${r.available}" th:classappend="${r.available == 0} ? 'zero' : ''">0</strong>
+                            <span class="muted"> available</span>
+                        </span>
+                    </div>
+                </section>
+
+                <footer class="cc-foot">
+                    <form method="post" th:action="@{/camps/{id}/delete(id=${view.camp.id})}"
+                          onsubmit="return confirm('Delete this camp?')">
+                        <button type="submit" class="link-danger">Delete camp</button>
+                    </form>
+                </footer>
+
+            </article>
+        </div>
     </div>
-
-    <p><a href="/reports">View Reports</a></p>
 </body>
 </html>

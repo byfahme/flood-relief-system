@@ -24,4 +24,15 @@ public class Camp {
     public void setName(String name) { this.name = name; }
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
+
+    private boolean received;
+    private String updateNote;
+
+    public boolean isReceived() { return received; }
+    public void setReceived(boolean received) { this.received = received; }
+    public String getUpdateNote() { return updateNote; }
+    public void setUpdateNote(String updateNote) { this.updateNote = updateNote; }
+
+
+
 }

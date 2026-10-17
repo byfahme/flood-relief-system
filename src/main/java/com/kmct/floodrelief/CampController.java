@@ -26,23 +26,33 @@ public class CampController {
 
     @GetMapping("/camps")
     public String showCamps(Model model) {
+        List<Resource> allStock = resourceRepository.findAll();
+        List<Need> allNeeds = needRepository.findAll();
         List<CampView> views = new ArrayList<>();
 
         for (Camp camp : campRepository.findAll()) {
-            List<Resource> resources = resourceRepository.findAll().stream()
+            List<Resource> stock = allStock.stream()
                     .filter(r -> r.getCamp() != null && r.getCamp().getId().equals(camp.getId()))
                     .toList();
 
-            List<Need> needs = needRepository.findAll().stream()
+            List<Need> stillNeeded = allNeeds.stream()
                     .filter(n -> n.getCamp() != null && n.getCamp().getId().equals(camp.getId()))
+                    .filter(n -> n.getStatus() == NeedStatus.OPEN
+                              || n.getStatus() == NeedStatus.ESCALATED)
+                    .filter(n -> n.getRemaining() > 0)
                     .toList();
 
-            views.add(new CampView(camp, resources, needs));
+            views.add(new CampView(camp, stock, stillNeeded));
         }
 
         model.addAttribute("camps", views);
-        model.addAttribute("camp", new Camp());
         return "camps";
+    }
+
+    @GetMapping("/camps/add")
+    public String showAddCamp(Model model) {
+        model.addAttribute("camp", new Camp());
+        return "add-camp";
     }
 
     @PostMapping("/camps")
@@ -51,6 +61,6 @@ public class CampController {
         return "redirect:/camps";
     }
 
-    // Simple holder so the template gets one object per camp
-    public record CampView(Camp camp, List<Resource> resources, List<Need> needs) {}
+    // One object per camp, holding only what the card needs
+    public record CampView(Camp camp, List<Resource> resources, List<Need> stillNeeded) {}
 }
